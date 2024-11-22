@@ -4,6 +4,6 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get("/all", isAuthenticated, getAllUser);
+router.get("/all", getAllUser);
 
 export default router;
