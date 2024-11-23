@@ -1,6 +1,7 @@
 import express from "express";
 import userRouter from "./routes/user.js";
 import adminRouter from "./routes/admin.js";
+import productRouter from "./routes/products.js";
 
 import { connectDb } from "./data/database.js";
 import { config } from "dotenv";
@@ -27,6 +28,7 @@ app.use(
 //using routes
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/admin", productRouter);
 
 app.get("/", (req, res) => {
   res.send("started");
