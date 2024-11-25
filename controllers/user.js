@@ -65,6 +65,7 @@ export const getMyProfile = async (req, res) => {
   res.status(200).json({
     success: true,
     user,
+    token,
   });
 };
 export const logout = (req, res) => {

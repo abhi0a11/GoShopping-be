@@ -68,7 +68,10 @@ export const removeProducts = async (req, res, next) => {
       return next(new ErrorHandler("No product Found!", 409));
     }
 
-    res.status(200).send(`Product ${name} is deleted successfully`);
+    res.status(200).send({
+      success: true,
+      message: `${name} deleted successfully`,
+    });
   } catch (error) {
     next(error);
   }
@@ -91,6 +94,7 @@ export const UpdateProducts = async (req, res, next) => {
 
     res.status(200).send(`Product ${name} is updated successfully`);
   } catch (error) {
+    // console.log("bahut");
     next(error);
   }
 };
