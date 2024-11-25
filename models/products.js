@@ -15,9 +15,8 @@ const productSchema = mongoose.Schema(
       type: String,
       default: "0",
     },
-    picture: {
+    pictures: {
       type: [String],
-      default: ["DEFAULT_PIC"],
     },
     description: {
       type: String,
@@ -26,13 +25,13 @@ const productSchema = mongoose.Schema(
       type: String,
     },
     color: {
-      type: [String],
+      type: [],
     },
     woodMaterial: {
-      type: [String],
+      type: [],
     },
     clothMaterial: {
-      type: [String],
+      type: [],
     },
     category: {
       type: String,

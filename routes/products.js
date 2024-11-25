@@ -2,6 +2,7 @@ import express from "express";
 import {
   add,
   fetchProducts,
+  fetchAllProducts,
   removeProducts,
   UpdateProducts,
 } from "../controllers/products.js";
@@ -9,7 +10,8 @@ import {
 const router = express.Router();
 
 router.post("/add", add);
-router.get("/products/:category", fetchProducts);
+router.get("/allproducts/:category", fetchAllProducts);
+router.get("/products/:id", fetchProducts);
 router.delete("/remove/:name", removeProducts);
 router.put("/update/:name", UpdateProducts);
 

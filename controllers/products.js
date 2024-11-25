@@ -7,28 +7,29 @@ export const add = async (req, res, next) => {
       name,
       price,
       discount,
-      picture,
+      pictures,
       description,
       warranty,
       color,
-      woodMaterial,
-      clothMaterial,
+      wood,
+      cloth,
       category,
     } = req.body;
 
     let product = await productModel.findOne({ name });
+
     if (product) return next(new ErrorHandler("Product already exist", 409));
 
     product = productModel.create({
       name,
       price,
       discount,
-      picture,
+      pictures: pictures || [],
       description,
       warranty,
       color,
-      woodMaterial,
-      clothMaterial,
+      woodMaterial: wood,
+      clothMaterial: cloth,
       category,
     });
     res.status(200).send(`Successfully added ${name}`);
@@ -36,13 +37,24 @@ export const add = async (req, res, next) => {
     next(error);
   }
 };
-export const fetchProducts = async (req, res, next) => {
+export const fetchAllProducts = async (req, res, next) => {
   try {
     const { category } = req.params;
     const products = await productModel.find({ category });
     if (!products) return next(new ErrorHandler("No product Found!", 409));
 
     res.status(200).send(products);
+  } catch (error) {
+    next(error);
+  }
+};
+export const fetchProducts = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const products = await productModel.findOne({ name: id });
+    if (!products) return next(new ErrorHandler("No product Found!", 409));
+
+    res.status(200).send({ success: true, message: "Product found" });
   } catch (error) {
     next(error);
   }
