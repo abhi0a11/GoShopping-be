@@ -12,7 +12,7 @@ export const sendCookie = (user, res, message, statusCode = 200) => {
       maxAge: 15 * 60 * 1000,
       // sameSite: "none", // if samesime if none then cookie will appear in postman
       // secure: true,
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
       secure: process.env.NODE_ENV === "Development" ? false : true,
     })
     .json({
