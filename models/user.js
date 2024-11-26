@@ -19,6 +19,10 @@ const usersSchema = mongoose.Schema({
     required: true,
     type: String,
   },
+  block: {
+    default: false,
+    type: Boolean,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

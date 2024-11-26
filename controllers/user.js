@@ -17,6 +17,7 @@ export const login = async (req, res, next) => {
     if (!isMatch) return next(new ErrorHandler("Invalid Credentials", 404));
     if (user.role !== role)
       return next(new ErrorHandler("Invalid Credentials", 404));
+    if (user.block) return next(new ErrorHandler("User is blocked", 404));
 
     sendCookie(user, res, `Welcome back ${user.name}`, 200);
   } catch (error) {
@@ -78,5 +79,6 @@ export const logout = (req, res) => {
     })
     .json({
       success: true,
+      message: "Logged out successfully",
     });
 };

@@ -19,7 +19,6 @@ export const isAuthenticated = async (req, res, next) => {
     console.error("Authentication error:", error.message);
     res.status(401).json({
       success: false,
-      auth: false,
       message: "Authentication failed",
     });
   }
