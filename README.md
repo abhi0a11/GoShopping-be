@@ -29,8 +29,8 @@ Users can browse products, add them to the cart, and place orders.
   
 ## User Mode
 - **GET** api/v1/admin/allproducts/:category - Fetch all products of specific category.
-- **POST** /api/v1/cart - Add items to the cart.
-- **POST** /api/v1/orders - Place an order.
+- **POST** /api/v1/cart - Add items to the cart (Not Implemented Yet).
+- **POST** /api/v1/orders - Place an order (Not Implemented Yet).
   
 ## Admin Mode
 - **POST** /api/v1/admin/add - Add a new product.
