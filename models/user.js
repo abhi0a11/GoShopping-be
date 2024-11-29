@@ -23,6 +23,10 @@ const usersSchema = mongoose.Schema({
     default: false,
     type: Boolean,
   },
+  cart: {
+    type: [],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
