@@ -72,7 +72,6 @@ export const UpdateProducts = async (req, res, next) => {
 
     res.status(200).send(`Product ${name} is updated successfully`);
   } catch (error) {
-    // console.log("bahut");
     next(error);
   }
 };

@@ -14,6 +14,7 @@ export const add = async (req, res, next) => {
       wood,
       cloth,
       category,
+      stock,
     } = req.body;
 
     let product = await productModel.findOne({ name });
@@ -31,6 +32,7 @@ export const add = async (req, res, next) => {
       woodMaterial: wood,
       clothMaterial: cloth,
       category,
+      stock,
     });
     res.status(200).send(`Successfully added ${name}`);
   } catch (error) {
@@ -94,7 +96,6 @@ export const UpdateProducts = async (req, res, next) => {
 
     res.status(200).send(`Product ${name} is updated successfully`);
   } catch (error) {
-    // console.log("bahut");
     next(error);
   }
 };

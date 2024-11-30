@@ -15,9 +15,9 @@ config({
   path: "./data/config.env",
 });
 connectDb;
-console.log("url", process.env.FRONTEND_URL);
 // using middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({

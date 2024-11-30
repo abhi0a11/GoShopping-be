@@ -8,12 +8,12 @@ const productSchema = mongoose.Schema(
       required: [true, "Please provide item name."],
     },
     price: {
-      type: String,
-      default: "0",
+      type: Number,
+      default: 0,
     },
     discount: {
-      type: String,
-      default: "0",
+      type: Number,
+      default: 0,
     },
     pictures: {
       type: [String],
@@ -37,8 +37,8 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    quantity: {
-      type: String,
+    stock: {
+      type: Number,
       default: 1,
     },
     createdAt: {
