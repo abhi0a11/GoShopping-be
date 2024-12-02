@@ -11,7 +11,7 @@ import { isAuthenticated } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.post("/add", add);
-router.get("/allproducts/:category", fetchAllProducts);
+router.get("/allproducts", fetchAllProducts);
 router.get("/products/:id", fetchProducts);
 router.delete("/remove/:name", removeProducts);
 router.put("/update/:name", UpdateProducts);
