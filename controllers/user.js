@@ -49,25 +49,17 @@ export const getMyProfile = async (req, res) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
+      throw new Error("Authentication token is missing.");
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (Date.now() >= decoded.exp * 1000) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Token expired." });
+      throw new Error("Token expired.");
     }
     const user = await User.findById(decoded._id);
 
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
+      throw new Error("User not found.");
     }
     res.status(200).json({
       success: true,
@@ -76,9 +68,9 @@ export const getMyProfile = async (req, res) => {
     });
   } catch (err) {
     if (err.name === "TokenExpiredError") {
-      return res.status(401).json({ message: "Token expired." });
+      throw new Error("Token expired.");
     }
-    return res.status(401).json({ message: "Invalid token." });
+    throw new Error("Invalid token.");
   }
 };
 export const logout = (req, res) => {
