@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 
 export const sendCookie = (user, res, message, statusCode = 200) => {
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "15m",
+  });
   // console.log(new URL(process.env.BACKEND_URL).hostname);
   res
     .status(statusCode)

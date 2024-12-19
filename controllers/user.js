@@ -46,42 +46,61 @@ export const register = async (req, res, next) => {
 };
 
 export const getMyProfile = async (req, res) => {
-  const { token } = req.cookies;
-  console.log("ye hua trigger bhai", token);
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "Authentication token is missing.",
-    });
-  }
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication token is missing.",
+      });
+    }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await User.findById(decoded._id);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (Date.now() >= decoded.exp * 1000) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Token expired." });
+    }
+    const user = await User.findById(decoded._id);
 
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "User not found.",
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+      token,
     });
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired." });
+    }
+    return res.status(401).json({ message: "Invalid token." });
   }
-  res.status(200).json({
-    success: true,
-    user,
-    token,
-  });
 };
 export const logout = (req, res) => {
   res
     .status(200)
-    .setHeader("Cache-Control", "no-store")
-    .clearCookie("token", {
-      path: "/",
-      sameSite: process.env.NODE_ENV == "Development" ? "lax" : "none",
-      secure: process.env.NODE_ENV == "Development" ? false : true,
-      httpOnly: true,
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "Development" ? false : true,
+      path: "/", // Clear across the app
+      httpOnly: true, // Same as when set
     })
     .json({
       success: true,
       message: "Logged out successfully",
     });
+  res.setHeader("Cache-Control", "no-store");
+  res.clearCookie("token", {
+    path: "/",
+    sameSite: process.env.NODE_ENV == "Development" ? "lax" : "none",
+    secure: process.env.NODE_ENV == "Development" ? false : true,
+    httpOnly: true,
+  });
+  console.log(res);
 };
