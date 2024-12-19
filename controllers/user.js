@@ -47,6 +47,7 @@ export const register = async (req, res, next) => {
 
 export const getMyProfile = async (req, res) => {
   const { token } = req.cookies;
+  console.log("ye hua trigger bhai", token);
   if (!token) {
     return res.status(401).json({
       success: false,
