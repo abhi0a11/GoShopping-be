@@ -41,7 +41,8 @@ export const add = async (req, res, next) => {
 };
 export const fetchAllProducts = async (req, res, next) => {
   try {
-    const products = await productModel.find();
+    const { category } = req.params;
+    const products = await productModel.find({ category });
     if (!products) return next(new ErrorHandler("No product Found!", 409));
 
     res.status(200).send(products);
