@@ -73,23 +73,15 @@ export const getMyProfile = async (req, res) => {
 export const logout = (req, res) => {
   res
     .status(200)
-    .cookie("token", "", {
-      expires: new Date(Date.now()),
+    .setHeader("Cache-Control", "no-store")
+    .clearCookie("token", {
+      path: "/",
       sameSite: process.env.NODE_ENV == "Development" ? "lax" : "none",
       secure: process.env.NODE_ENV == "Development" ? false : true,
-      path: "/", // Clear across the app
-      httpOnly: true, // Same as when set
+      httpOnly: true,
     })
     .json({
       success: true,
       message: "Logged out successfully",
     });
-  res.setHeader("Cache-Control", "no-store");
-  res.clearCookie("token", {
-    path: "/",
-    sameSite: process.env.NODE_ENV == "Development" ? "lax" : "none",
-    secure: process.env.NODE_ENV == "Development" ? false : true,
-    httpOnly: true,
-  });
-  console.log(res);
 };
