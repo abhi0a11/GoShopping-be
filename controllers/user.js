@@ -86,8 +86,8 @@ export const logout = (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   res.clearCookie("token", {
     path: "/",
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    sameSite: process.env.NODE_ENV == "Development" ? "lax" : "none",
+    secure: process.env.NODE_ENV == "Development" ? false : true,
     httpOnly: true,
   });
   console.log(res);
