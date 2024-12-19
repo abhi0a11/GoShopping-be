@@ -70,20 +70,25 @@ export const getMyProfile = async (req, res) => {
   });
 };
 export const logout = (req, res) => {
-  res.setHeader("Cache-Control", "no-store");
   res
     .status(200)
     .cookie("token", "", {
-      // expires: new Date(Date.now()),
+      expires: new Date(Date.now()),
       sameSite: process.env.NODE_ENV == "Development" ? "lax" : "none",
       secure: process.env.NODE_ENV == "Development" ? false : true,
-
-      path: "/", // Clear token across the app
-      httpOnly: true, // Prevent frontend access to cookies
-      expires: new Date(0), // Expire the cookie
+      path: "/", // Clear across the app
+      httpOnly: true, // Same as when set
     })
     .json({
       success: true,
       message: "Logged out successfully",
     });
+  res.setHeader("Cache-Control", "no-store");
+  res.clearCookie("token", {
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    httpOnly: true,
+  });
+  console.log(res);
 };
