@@ -75,9 +75,9 @@ export const logout = (req, res, next) => {
   try {
     res
       .status(200)
-      .cookie("token", "", {
+      .clearCookie("token", {
         path: "/",
-        doomain:
+        domain:
           process.env.NODE_ENV === "Development"
             ? "localhost"
             : new URL(process.env.BACKEND_URL).hostname,
