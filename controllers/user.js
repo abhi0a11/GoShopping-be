@@ -75,11 +75,11 @@ export const logout = (req, res, next) => {
   try {
     res
       .status(200)
-      .clearCookie("token", {
+      .cookie("token", "", {
         path: "/",
         doomain:
           process.env.NODE_ENV === "Development"
-            ? "localhost" // Only the hostname for development
+            ? "localhost"
             : new URL(process.env.BACKEND_URL).hostname,
         sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
         secure: process.env.NODE_ENV === "Development" ? false : true,
