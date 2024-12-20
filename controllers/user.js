@@ -29,7 +29,7 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
     let user = await User.findOne({ email, role });
-    if (user) return next(new ErrorHandler("User already exit", 404));
+    if (user) throw next(new ErrorHandler("User already exit", 404));
 
     const hashedPassword = await bcrypt.hash(password, 10);
     user = await User.create({
@@ -49,25 +49,15 @@ export const getMyProfile = async (req, res) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
+      return next(new ErrorHandler("Authentication token is missing.", 401));
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (Date.now() >= decoded.exp * 1000) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Token expired." });
-    }
+
     const user = await User.findById(decoded._id);
 
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found.",
-      });
+      throw next(new ErrorHandler("please log in.", 404));
     }
     res.status(200).json({
       success: true,
@@ -81,18 +71,16 @@ export const getMyProfile = async (req, res) => {
     return res.status(401).json({ message: "Invalid token." });
   }
 };
-export const logout = (req, res) => {
-  res
-    .status(200)
-    .cookie("token", "", {
-      expires: new Date(0),
-      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
-      secure: process.env.NODE_ENV === "Development" ? false : true,
-      path: "/", // Clear across the app
-      httpOnly: true, // Same as when set
-    })
-    .json({
-      success: true,
-      message: "Logged out successfully",
-    });
+export const logout = (req, res, next) => {
+  try {
+    res
+      .status(200)
+      .clearCookie("token", {
+        path: "/api/v1/auth/token", // Clear across the app
+      })
+      .json({
+        success: true,
+        message: "Logged out successfully",
+      });
+  } catch (error) {}
 };
