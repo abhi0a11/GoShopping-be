@@ -76,11 +76,19 @@ export const logout = (req, res, next) => {
     res
       .status(200)
       .clearCookie("token", {
-        path: "/", // Clear across the app
+        path: "/",
+        doomain:
+          process.env.NODE_ENV === "Development"
+            ? "localhost" // Only the hostname for development
+            : new URL(process.env.BACKEND_URL).hostname,
+        sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+        secure: process.env.NODE_ENV === "Development" ? false : true,
       })
       .json({
         success: true,
         message: "Logged out successfully",
       });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
