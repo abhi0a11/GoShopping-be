@@ -76,7 +76,7 @@ export const logout = (req, res, next) => {
     res
       .status(200)
       .clearCookie("token", {
-        path: "/api/v1/auth/token", // Clear across the app
+        path: "/", // Clear across the app
       })
       .json({
         success: true,
