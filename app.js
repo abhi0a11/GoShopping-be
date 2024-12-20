@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", true); // Specific domain
+  res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL); // Specific domain
   res.header("Access-Control-Allow-Credentials", "true"); // Allow credentials
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Allowed HTTP methods
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allowed headers
