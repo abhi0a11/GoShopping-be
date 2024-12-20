@@ -82,30 +82,17 @@ export const getMyProfile = async (req, res) => {
   }
 };
 export const logout = (req, res) => {
-  // res
-  //   .status(200)
-  //   .cookie("token", "", {
-  //     expires: new Date(Date.now()),
-  //     sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
-  //     secure: process.env.NODE_ENV === "Development" ? false : true,
-  //     path: "/", // Clear across the app
-  //     httpOnly: true, // Same as when set
-  //   })
-  //   .json({
-  //     success: true,
-  //     message: "Logged out successfully",
-  //   });
-  // res.setHeader("Cache-Control", "no-store");
   res
-    .clearCookie("token", {
-      path: "/",
-      sameSite: "Strict",
-      secure: true,
-      httpOnly: true,
+    .status(200)
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "Development" ? false : true,
+      path: "/", // Clear across the app
+      httpOnly: true, // Same as when set
     })
     .json({
       success: true,
-      message: "Logged Out Successfully",
+      message: "Logged out successfully",
     });
-  console.log(res);
 };
