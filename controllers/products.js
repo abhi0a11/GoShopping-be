@@ -41,8 +41,7 @@ export const add = async (req, res, next) => {
 };
 export const fetchAllProducts = async (req, res, next) => {
   try {
-    const { category } = req.params;
-    const products = await productModel.find({ category });
+    const products = await productModel.find();
     if (!products) return next(new ErrorHandler("No product Found!", 409));
 
     res.status(200).send(products);
@@ -52,11 +51,11 @@ export const fetchAllProducts = async (req, res, next) => {
 };
 export const fetchProducts = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const products = await productModel.findOne({ name: id });
+    const { category } = req.params;
+    const products = await productModel.find({ category });
     if (!products) return next(new ErrorHandler("No product Found!", 409));
 
-    res.status(200).send({ success: true, message: "Product found" });
+    res.status(200).send(products);
   } catch (error) {
     next(error);
   }
