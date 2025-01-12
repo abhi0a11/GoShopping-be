@@ -3,12 +3,13 @@ import userRouter from "./routes/user.js";
 import adminRouter from "./routes/admin.js";
 import productRouter from "./routes/products.js";
 import cartRouter from "./routes/cart.js";
-
+import cron from "node-cron";
 import { connectDb } from "./data/database.js";
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middlewares/error.js";
 import cors from "cors";
+import axios from "axios";
 const app = express();
 
 config({
@@ -40,10 +41,16 @@ app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/admin", productRouter);
 app.use("/api/v1/user", cartRouter);
 
-app.get("/", (req, res) => {
-  res.send("started");
+app.get("/ping", (req, res) => {
+  res.status(200).send("server is alive!");
 });
-
+cron.schedule("*/14 * * * *", async () => {
+  try {
+    await axios.get(`${process.env.BACKEND_URL}/ping`);
+  } catch (error) {
+    console.error("Failed to ping server:", error.message);
+  }
+});
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
